@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Some_news
+{% endblock title %}
+
+
+{% block content %}
+<h1><b> {{ some_news.title}} </b></h1>
+<h2> Рейтинг: {{some_news.rating}} </h2>
+<h2>{{ some_news.time_in|date:'M d Y' }}</h2>
+<hr>
+<h3><em> Содержание: </em></h3>
+<h3><p align="left"> {{ some_news.text|censor }} </p></h3>
+<hr>
+{% endblock content %}
