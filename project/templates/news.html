@@ -9,8 +9,14 @@ News
 {% block content %}
 <h1><b> Все новости </b></h1>
 <h3> {% current_time '%b %d %Y' %}</h3>
-<h3> {{ next_post|default_if_none:"Мы сообщим если будет свежая новость" }} </h3>
+<h3> {{ next_post|default_if_none:"Мы сообщим если будут новости" }} </h3>
 <h3> {{ news|length }} news:</h3>
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти" />
+   </form>
+
 <hr>
     {% if news %}
         <table>
@@ -30,4 +36,24 @@ News
     {% else %}
         <h2> Нет новостей! </h2>
     {% endif %}
+
+{% if page_obj.has_previous %}
+       {# Для каждой ссылки пагинации указываем обработку через новый тег #}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
 {% endblock content %}
