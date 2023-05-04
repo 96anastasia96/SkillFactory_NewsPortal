@@ -9,10 +9,12 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'author',
             'title',
             'text',
+            'author',
+            'categories',
             'rating',
+            'type',
         ]
 
     def clean(self):
@@ -24,3 +26,4 @@ class PostForm(forms.ModelForm):
                 "Заголовок не может быть идентичен тексту."
             )
         return cleaned_data
+

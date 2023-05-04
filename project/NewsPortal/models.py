@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
 
 
 article = 'AR'
@@ -30,10 +32,13 @@ class Author(models.Model):
 class Category(models.Model):
     name_category = models.CharField(max_length=40, unique=True)
 
+    def __str__(self):
+        return f'{self.name_category}'
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    type = models.CharField(max_length=7, choices=TYPE, default=news)
+    type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=255)
@@ -58,7 +63,12 @@ class Post(models.Model):
         return f'{self.title.title()}: {self.text[:20]}'
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        if self.type == article:
+            return reverse('article', args=[str(self.id)])
+        elif self.type == news:
+            return reverse('some_news', args=[str(self.id)])
+        else:
+            return reverse('/', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
@@ -80,3 +90,14 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['title', 'text']
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.pk})
+
+

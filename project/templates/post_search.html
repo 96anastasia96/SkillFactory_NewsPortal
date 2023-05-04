@@ -5,10 +5,9 @@
 <ul>
   {% for post in object_list %}
     {% if category and category not in post.categories %}
-        {% continue %}
     {% endif %}
     <li>
-        {{ post.title }}, {{ post.text }}, {{ post.time_in }}, {{ post.type }}, {{ post.categories }}
+      <a href="{% url 'some_news' post.pk %}">{{ post.title }}</a>, {{ post.text }}, {{ post.time_in }}, {{ post.type }}, {{ post.categories }}
     </li>
 {% endfor %}
 </ul>

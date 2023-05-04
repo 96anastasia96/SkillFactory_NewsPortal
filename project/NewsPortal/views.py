@@ -1,17 +1,18 @@
 from datetime import datetime
 from django.urls import reverse_lazy
-from django.views.generic import ( ListView, DetailView, CreateView, UpdateView, DeleteView )
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 class PostList(ListView):
     model = Post
     ordering = 'title'
-    template_name = 'news.html'
-    context_object_name = 'news'
+    template_name = 'posts.html'
+    context_object_name = 'posts'
     paginate_by = 10
 
     def get_queryset(self):
@@ -27,19 +28,26 @@ class PostList(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetailView(DetailView):
     model = Post
     template_name = 'some_news.html'
     context_object_name = 'some_news'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
+
 
 class PostCreate(CreateView):
-    # Указываем нашу разработанную форму
     form_class = PostForm
-    # модель товаров
     model = Post
-    # и новый шаблон, в котором используется форма.
-    template_name = 'post_edit.html'
+    template_name = 'new_post.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
+        return response
 
 
 class PostUpdate(UpdateView):
@@ -56,7 +64,7 @@ class PostDelete(DeleteView):
 
 class SearchResultsView(ListView):
     model = Post
-    template_name = 'post_search.html'
+    template_name = 'search.html'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -74,4 +82,36 @@ class SearchResultsView(ListView):
         return object_list
 
 
+class ArticleDetailView(DetailView):
+    model = Post
+    template_name = 'article.html'
+    context_object_name = 'article'
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
+
+
+class ArticleCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'new_article.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.success_url = reverse_lazy('new_article', kwargs={'pk': self.object.id})
+        return response
+
+
+class ArticleUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'article_edit.html'
+
+
+class ArticleDelete(DeleteView):
+    model = Post
+    template_name = 'article_delete.html'
+    success_url = reverse_lazy('posts')
 
