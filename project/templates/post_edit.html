@@ -1,6 +1,8 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
+{% if NewsPortal.change_post %}
+
 <h1>Редактирование новости</h1>
 <hr>
 <form action="" method="post">
@@ -8,4 +10,7 @@
     {{ form.as_p }}
     <input type="submit" value="Save" />
 </form>
+{% else %}
+        <h2> Упс! <strong><span style="text-decoration: underline;">{{request.user.username}}</span></strong> у тебя недостаточно прав!  </h2>
+    {% endif %}
 {% endblock content %}

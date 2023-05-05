@@ -1,11 +1,15 @@
 from datetime import datetime
+
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 class PostList(ListView):
@@ -43,6 +47,7 @@ class PostCreate(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_post.html'
+
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -114,4 +119,23 @@ class ArticleDelete(DeleteView):
     model = Post
     template_name = 'article_delete.html'
     success_url = reverse_lazy('posts')
+
+
+class CreatePostView(PermissionRequiredMixin, CreateView):
+    permission_required = 'NewsPortal.add_post'
+    model = Post
+    fields = ('title', 'text')
+    author_group = 'author'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
+        return response
+
+
+@login_required(login_url='/accounts/login/')
+def byebye(request):
+    logout(request)
+    return redirect('logout')
+
 
