@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission, Group
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import ListView
 from django.views.generic.edit import UpdateView
 
 
@@ -101,3 +102,5 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
 
+class PostAdding(PermissionRequiredMixin, ListView):
+    permission_required = 'NewsPortal.add_post'
