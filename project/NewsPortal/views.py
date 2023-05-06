@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
@@ -47,7 +47,6 @@ class PostCreate(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_post.html'
-
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -139,3 +138,13 @@ def byebye(request):
     return redirect('logout')
 
 
+def author_required(function):
+    """
+    Декоратор, который проверяет, является ли пользователь членом группы "author"
+    и разрешает создание новых постов, если это так.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.groups.filter(name='author').exists(),
+        login_url='/login/'
+    )
+    return actual_decorator(function)

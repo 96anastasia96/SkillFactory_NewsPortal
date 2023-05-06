@@ -1,7 +1,6 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-{% if NewsPortal.add_post %}
 
 <h1>Добавление новости</h1>
 <hr>
@@ -13,8 +12,5 @@
 </form>
 
 
-{% else %}
-        <h2> Упс! <strong><span style="text-decoration: underline;">{{request.user.username}}</span></strong> у тебя недостаточно прав!  </h2>
-    {% endif %}
 
 {% endblock content %}
