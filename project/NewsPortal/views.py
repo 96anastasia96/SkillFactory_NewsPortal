@@ -1,15 +1,18 @@
 from datetime import datetime
 
-from django.contrib.auth import logout
+from django.contrib import messages
+from django.contrib.auth import logout, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import request, Http404
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView, FormView)
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
-from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 class PostList(ListView):
@@ -18,6 +21,12 @@ class PostList(ListView):
     template_name = 'posts.html'
     context_object_name = 'posts'
     paginate_by = 10
+
+    @method_decorator(login_required)
+    def posts(request):
+        posts = Post.objects.filter(author=request.user).order_by('time_in')
+        context = {'posts': posts}
+        return render(request, 'NewsPortal/posts.html', context)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -43,10 +52,12 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_post.html'
+    success_url = reverse_lazy('some_news')
+    permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -54,10 +65,12 @@ class PostCreate(CreateView):
         return response
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    success_url = reverse_lazy('some_news')
+    permission_required = ('NewsPortal.change_post',)
 
 
 class PostDelete(DeleteView):
@@ -97,10 +110,12 @@ class ArticleDetailView(DetailView):
         return context
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_article.html'
+    success_url = reverse_lazy('article')
+    permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -108,10 +123,12 @@ class ArticleCreate(CreateView):
         return response
 
 
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
+    success_url = reverse_lazy('new_article')
+    permission_required = ('NewsPortal.change_post',)
 
 
 class ArticleDelete(DeleteView):
@@ -120,31 +137,7 @@ class ArticleDelete(DeleteView):
     success_url = reverse_lazy('posts')
 
 
-class CreatePostView(PermissionRequiredMixin, CreateView):
-    permission_required = 'NewsPortal.add_post'
-    model = Post
-    fields = ('title', 'text')
-    author_group = 'author'
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
-        return response
-
-
 @login_required(login_url='/accounts/login/')
 def byebye(request):
     logout(request)
     return redirect('logout')
-
-
-def author_required(function):
-    """
-    Декоратор, который проверяет, является ли пользователь членом группы "author"
-    и разрешает создание новых постов, если это так.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.groups.filter(name='author').exists(),
-        login_url='/login/'
-    )
-    return actual_decorator(function)

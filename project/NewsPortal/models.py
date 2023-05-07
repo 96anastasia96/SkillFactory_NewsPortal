@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Permission, Group
 from django.db import models
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView
@@ -38,7 +39,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category, through='PostCategory')
@@ -102,5 +103,4 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
 
-class PostAdding(PermissionRequiredMixin, ListView):
-    permission_required = 'NewsPortal.add_post'
+
