@@ -1,18 +1,16 @@
 from datetime import datetime
-
-from django.contrib import messages
-from django.contrib.auth import logout, REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import request, Http404
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView, FormView)
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
+
 
 
 class PostList(ListView):
@@ -141,3 +139,4 @@ class ArticleDelete(DeleteView):
 def byebye(request):
     logout(request)
     return redirect('logout')
+

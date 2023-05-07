@@ -1,9 +1,8 @@
-from django.contrib.auth.models import User, Permission, Group
+
+from django.contrib.auth.models import User
 from django.db import models
-from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 
 
@@ -101,6 +100,4 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
-
-
 

@@ -1,0 +1,20 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Подписаться
+{% endblock title %}
+
+{% block content %}
+    <h1> Подписаться </h1>
+    <form action="% url 'subscribe' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        <label for="user_name"> Ваше имя </label>
+        <input type="text" name="user_name"> <br>
+        <label for="message"> Краткое сообщение</label>
+        <input type="text" name="message"> <br>
+        <label type="categories.first.name_category"> Выберите категорию</label> <br>
+        <input type="submit">
+    </form>
+
+{% endblock content %}
