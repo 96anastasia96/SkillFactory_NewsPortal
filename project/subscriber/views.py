@@ -28,4 +28,4 @@ class SubscriptionView(View):
             recipient_list=[]  # здесь список получателей. Например, секретарь, сам врач и т. д.
         )
 
-        return redirect('/subscribed/')
+        return redirect('subscribe:subscribed')
