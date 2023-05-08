@@ -11,10 +11,15 @@ Article
 <a href="{%url 'article_delete' article.pk%}">Удалить статью</a>
 
 <h1><b> {{ article.title}} </b></h1>
+
 <h2> Рейтинг: {{article.rating}} </h2>
 <h2>{{ article.time_in|date:'M d Y' }}</h2>
 <h2>{{ article.type }}</h2>
 <h2>{{ article.author }}</h2>
+<h2>{{ article.categories.first.name_category }}</h2>
+<a href="{%url 'article' article.pk %}">Подписаться на категорию</a></td>
+
+
 
 <hr>
 <h3><em> Содержание: </em></h3>

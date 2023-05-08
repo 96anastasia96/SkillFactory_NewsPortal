@@ -27,3 +27,8 @@ class PostForm(forms.ModelForm):
             )
         return cleaned_data
 
+
+#class SubcribersForm(forms.ModelForm):
+#    class Meta:
+#        model = Subscribers
+#        fields = ['email', 'category']

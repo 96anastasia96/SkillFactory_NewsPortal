@@ -11,11 +11,14 @@ Some_news
 <a href="{%url 'post_delete' some_news.pk%}">Удалить новость</a>
 
 <h1><b> {{ some_news.title}} </b></h1>
+
 <h2> Рейтинг: {{some_news.rating}} </h2>
+
 <h2>{{ some_news.time_in|date:'M d Y' }}</h2>
 <h2>{{ some_news.type }}</h2>
 <h2>{{ some_news.author }}</h2>
-
+<h2>{{ some_news.categories.first.name_category }}</h2>
+<a href="{%url 'some_news' some_news.pk %}">Подписаться на категорию</a></td>
 
 <hr>
 <h3><em> Содержание: </em></h3>

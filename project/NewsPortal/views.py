@@ -2,20 +2,20 @@ from datetime import datetime
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post
+from .models import Post, Category, PostCategory
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 
 
-
 class PostList(ListView):
     model = Post
-    ordering = 'title'
+    ordering = '-time_in'
     template_name = 'posts.html'
     context_object_name = 'posts'
     paginate_by = 10
@@ -112,7 +112,6 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_article.html'
-    success_url = reverse_lazy('article')
     permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
@@ -140,3 +139,38 @@ def byebye(request):
     logout(request)
     return redirect('logout')
 
+
+#class SubscriptionView(View):
+#    def get(self, request, *args, **kwargs):
+#        return render(request, 'subscribe.html',)
+#
+#    def base(request):
+#        if request.method == 'POST':
+#            form = SubcribersForm(request.POST)
+#            if form.is_valid():
+#                form.save()
+#                return redirect('/subscribe')
+#        else:
+#            form = SubcribersForm()
+#
+#        context = {'form': form}
+#        mail_admins(form)
+#        return render(request, 'subscribe.html', context)
+
+
+class PostCategoryList(ListView):
+    model = PostCategory
+    template_name = 'news_by_category.html'
+    context_object_name = 'news_by_category'
+
+    def news_by_category(request, category_slug):
+        try:
+            category = Category.objects.get(slug=category_slug)
+            post = Post.objects.filter(categories=category)
+        except:
+            raise Http404("Category not found")
+        context = {
+            'post': post,
+            'category': category
+        }
+        return render(request, 'news_by_category.html', context)

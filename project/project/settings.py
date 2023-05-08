@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'subscriber',
+
 ]
 
 SITE_ID = 1
@@ -163,4 +163,9 @@ EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почт
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
 EMAIL_HOST_USER = 'su8scriber'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
 EMAIL_HOST_PASSWORD = 'ylzebmxomcyretaa'  # пароль от почты
-EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
+EMAIL_USE_SSL = True
+ADMINS = [
+    ('Anastasia', 'kissodessa@gmail.com'),
+    # список всех админов в формате ('имя', 'их почта')
+]
+SERVER_EMAIL = 'su8scriber@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
