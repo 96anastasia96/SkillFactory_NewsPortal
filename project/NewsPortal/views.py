@@ -2,12 +2,14 @@ from datetime import datetime
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import Http404
+from django.core.mail import send_mail, EmailMultiAlternatives, mail_admins
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, Category, PostCategory
+from .models import Post, PostCategory, Category, Appointment
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
@@ -22,7 +24,7 @@ class PostList(ListView):
 
     @method_decorator(login_required)
     def posts(request):
-        posts = Post.objects.filter(author=request.user).order_by('time_in')
+        posts = Post.objects.filter(author=request.user).order_by('-time_in')
         context = {'posts': posts}
         return render(request, 'NewsPortal/posts.html', context)
 
@@ -163,14 +165,37 @@ class PostCategoryList(ListView):
     template_name = 'news_by_category.html'
     context_object_name = 'news_by_category'
 
-    def news_by_category(request, category_slug):
-        try:
-            category = Category.objects.get(slug=category_slug)
-            post = Post.objects.filter(categories=category)
-        except:
-            raise Http404("Category not found")
+    def news_by_category(request):
+        category = request.GET.get('category', None)
+        if category:
+            post = Post.objects.filter(category=request.categories).order_by('-time_in')
+        else:
+            post = Post.objects.all()
+
         context = {
             'post': post,
-            'category': category
+            'categories': category,
         }
+
         return render(request, 'news_by_category.html', context)
+
+
+class AppointmentView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'make_appointment.html', {})
+
+    def post(self, request, *args, **kwargs):
+        appointment = Appointment(
+            date=datetime.strptime(request.POST['date'], '%Y-%m-%d'),
+            client_name=request.POST['client_name'],
+            message=request.POST['message'],
+        )
+        appointment.save()
+
+        # отправляем письмо всем админам по аналогии с send_mail, только здесь получателя указывать не надо
+        mail_admins(
+            subject=f'{appointment.client_name} {appointment.date.strftime("%d %m %Y")}',
+            message=appointment.message,
+        )
+
+        return redirect('appointments:make_appointment')

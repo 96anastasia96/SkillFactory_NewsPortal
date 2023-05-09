@@ -1,3 +1,4 @@
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -32,10 +33,23 @@ class Author(models.Model):
 
 class Category(models.Model):
     name_category = models.CharField(max_length=40, unique=True)
+    subscribers = models.ManyToManyField(User)
 
     def __str__(self):
         return f'{self.name_category}'
 
+
+class Appointment(models.Model):
+    date = models.DateField(
+        default=datetime.utcnow,
+    )
+    client_name = models.CharField(
+        max_length=200
+    )
+    message = models.TextField()
+
+    def __str__(self):
+        return f'{self.client_name}: {self.message}'
 
 #class Subscribers(models.Model):
 #    email = models.EmailField(null=True)
