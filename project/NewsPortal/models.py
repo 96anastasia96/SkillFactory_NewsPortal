@@ -1,6 +1,9 @@
-from datetime import datetime
+import os
+from datetime import *
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -51,17 +54,9 @@ class Appointment(models.Model):
     def __str__(self):
         return f'{self.client_name}: {self.message}'
 
-#class Subscribers(models.Model):
-#    email = models.EmailField(null=True)
-#    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-#    date = models.DateTimeField(auto_now_add=True)
-#
-#    def __str__self(self):
-#        return self.email
-
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), default=1, on_delete=models.SET_DEFAULT)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category, through='PostCategory')
@@ -99,6 +94,7 @@ class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+
     def __str__(self):
         return f'{self.category}'
 
@@ -126,4 +122,14 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
+
+
+class SubscribedUsers(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True, max_length=100)
+    created_date = models.DateTimeField('Date created', default=timezone.now)
+    category = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return self.email
 

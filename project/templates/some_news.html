@@ -8,8 +8,21 @@ Some_news
 
 {% block content %}
 <a href="{%url 'post_edit' some_news.pk%}">Редактировать новость</a>
-<a href="{%url 'post_delete' some_news.pk%}">Удалить новость</a>
+<a href="{%url 'post_delete' some_news.pk%}">Удалить новость</a> <br>
+<a href="{%url 'some_news' some_news.pk %}">Подписаться на категорию</a></td>
 
+<form action="{% url 'subscribe' %}" method="POST">
+
+  {% csrf_token %}
+  <label for="name">Your name</label>
+  <input type="text" name="name"> <br>
+  <label for="email"> Email</label>
+  <input type="email" name="email"> <br>
+    <label for="category"> Choose category</label>
+  <input type="category" name="category"><br><br>
+  <input type="submit" class="btn btn-dark">
+
+</form>
 <h1><b> {{ some_news.title}} </b></h1>
 
 <h2> Рейтинг: {{some_news.rating}} </h2>
@@ -18,7 +31,6 @@ Some_news
 <h2>{{ some_news.type }}</h2>
 <h2>{{ some_news.author }}</h2>
 <h2>{{ some_news.categories.first.name_category }}</h2>
-<a href="{%url 'some_news' some_news.pk %}">Подписаться на категорию</a></td>
 
 <hr>
 <h3><em> Содержание: </em></h3>

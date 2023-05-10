@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import (PostList, PostDetailView, PostCreate, PostUpdate, PostDelete, SearchResultsView, ArticleDelete,
-                    ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, PostCategoryList, AppointmentView)
+                    ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, PostCategoryList, AppointmentView, subscribe)
 
 urlpatterns = [
     path('posts/', PostList.as_view(), name ='post_list'),
@@ -16,10 +16,9 @@ urlpatterns = [
     path('article/<int:pk>/edit/', ArticleUpdate.as_view(), name='article_edit'),
     path('article/<int:pk>/delete/', ArticleDelete.as_view(), name='article_delete'),
     path('byebye/', byebye, name='byebye'),
-    #path('subscribe/', SubscriptionView.as_view(), name='subscribe'),
-    #path('subscribed/', SubscriptionView.as_view(), name='subscribed'),
     path('news_by_category/', PostCategoryList.as_view(), name='news_by_category'),
     path('appointment_created/', AppointmentView.as_view(), name='appointment_created'),
-    path('appointments/make_appointment/', AppointmentView.as_view(), name='make_appointment'),
+    path('make_appointment/', AppointmentView.as_view(), name='make_appointment'),
+    path('subscribe/', subscribe, name='subscribe'),
 
 ]

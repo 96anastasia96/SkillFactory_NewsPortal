@@ -1,4 +1,6 @@
 from django import forms
+#from tinymce import TinyMCE
+
 from .models import Post
 from django.core.exceptions import ValidationError
 
@@ -28,7 +30,7 @@ class PostForm(forms.ModelForm):
         return cleaned_data
 
 
-#class SubcribersForm(forms.ModelForm):
-#    class Meta:
-#        model = Subscribers
-#        fields = ['email', 'category']
+#class NewsletterForm(forms.Form):
+#    subject = forms.CharField()
+#    receivers = forms.CharField()
+#    message = forms.CharField(widget=TinyMCE(), label="Email content")

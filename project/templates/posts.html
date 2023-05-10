@@ -7,6 +7,7 @@ News & Articles
 {% endblock title %}
 
 {% block content %}
+
 <h1><b> Все новости и статьи </b></h1>
 <a href="/news/create/">Создать новость</a>
 <a href="/article/create/">Создать статью</a>
@@ -62,4 +63,5 @@ News & Articles
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
+
 {% endblock content %}

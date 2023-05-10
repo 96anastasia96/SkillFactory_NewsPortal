@@ -1,18 +1,20 @@
 from datetime import datetime
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.core.mail import send_mail, EmailMultiAlternatives, mail_admins
+from django.core.exceptions import ValidationError
+from django.core.mail import mail_admins
+from django.core.validators import validate_email
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, PostCategory, Category, Appointment
+from .models import Post, PostCategory, Appointment, SubscribedUsers, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
+from django.contrib import messages
 
 
 class PostList(ListView):
@@ -142,42 +144,18 @@ def byebye(request):
     return redirect('logout')
 
 
-#class SubscriptionView(View):
-#    def get(self, request, *args, **kwargs):
-#        return render(request, 'subscribe.html',)
-#
-#    def base(request):
-#        if request.method == 'POST':
-#            form = SubcribersForm(request.POST)
-#            if form.is_valid():
-#                form.save()
-#                return redirect('/subscribe')
-#        else:
-#            form = SubcribersForm()
-#
-#        context = {'form': form}
-#        mail_admins(form)
-#        return render(request, 'subscribe.html', context)
-
-
 class PostCategoryList(ListView):
-    model = PostCategory
+    model = Post
     template_name = 'news_by_category.html'
-    context_object_name = 'news_by_category'
+    context_object_name = 'posts'
+    paginate_by = 10
 
-    def news_by_category(request):
-        category = request.GET.get('category', None)
-        if category:
-            post = Post.objects.filter(category=request.categories).order_by('-time_in')
-        else:
-            post = Post.objects.all()
+    def frontpage(request):
+        title = 'This is a variable'
+        posts = Post.objects.all()
+        categories = Category.objects.all()
 
-        context = {
-            'post': post,
-            'categories': category,
-        }
-
-        return render(request, 'news_by_category.html', context)
+        return render(request, 'news_by_category.html', {'title': title, 'posts': posts, 'categories': categories})  # Changed, 3
 
 
 class AppointmentView(View):
@@ -198,4 +176,48 @@ class AppointmentView(View):
             message=appointment.message,
         )
 
-        return redirect('appointments:make_appointment')
+        return redirect('make_appointment')
+
+
+def subscribe(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+        category = request.POST.get('category', None)
+
+        if not email or not name:
+            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            return redirect("/")
+
+        if get_user_model().objects.filter(email=email).first():
+            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
+        if subscribe_user:
+            messages.error(request, f"{email} email address is already subscriber.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        try:
+            validate_email(email)
+        except ValidationError as e:
+            messages.error(request, e.messages[0])
+            return redirect("/")
+
+        subscribe_model_instance = SubscribedUsers()
+        subscribe_model_instance.name = name
+        subscribe_model_instance.email = email
+        subscribe_model_instance.category = category
+        subscribe_model_instance.save()
+        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+
+#@user_is_superuser
+#def newsletter(request):
+#    form = NewsletterForm()
+#    form.fields['receiver'].initial = ','.join([active.email for active in SubscribedUsers.objects.all()])
+#    return render(request=request, template_name='newsletter.html', context={'form': form})
+
+
