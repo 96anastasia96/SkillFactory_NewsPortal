@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Категории</h1>
+<hr>
+{% if category %}
+    <table>
+        <tr>
+            <td> Название категории </td>
+        </tr>
+        {% for cats in category %}
+        <tr>
+            <td> <a href="{% url 'category' category %}">{{ cats.name }} </a> </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+<h2> Категорий нет </h2>
+{% endif %}
+
+{% endblock content %}
