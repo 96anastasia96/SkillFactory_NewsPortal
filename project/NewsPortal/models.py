@@ -35,9 +35,13 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=40, unique=True)
+    subscribe = models.ManyToManyField(User,
+                                       related_name="subscribed_by",
+                                       symmetrical=False,
+                                       blank=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.name.title()}'
 
     def get_absolute_url(self):
         return reverse('add_category')
@@ -125,11 +129,22 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
 
-class SubscribedUsers(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True, max_length=100)
-    created_date = models.DateTimeField('Date created', default=timezone.now)
-    category = models.ManyToManyField(Category)
+#class SubscribedUsers(models.Model):
+#    name = models.CharField(max_length=100)
+#    email = models.EmailField(unique=True, max_length=100)
+#    created_date = models.DateTimeField('Date created', default=timezone.now)
+#    category = models.ManyToManyField(Category)
+#
+#    def __str__(self):
+#        return self.email
 
-    def __str__(self):
-        return self.email
+
+#class Profile(models.Model):
+#    user = models.OneToOneField(User, on_delete=models.CASCADE)
+#    subscribe = models.ManyToManyField(Category,
+#                                       related_name="subscribed_by",
+#                                       symmetrical=False,
+#                                       blank=True)
+#
+#    def __str__(self):
+#        return self.user.username

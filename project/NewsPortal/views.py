@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, Appointment, SubscribedUsers, Category
+from .models import Post, Appointment, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
@@ -181,42 +181,42 @@ class AppointmentView(View):
         return redirect('make_appointment')
 
 
-def subscribe(request):
-    if request.method == 'POST':
-        name = request.POST.get('name', None)
-        email = request.POST.get('email', None)
-        category = request.POST.get('category', None)
-
-        if not email or not name:
-            messages.error(request,
-                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-            return redirect("/")
-
-        if get_user_model().objects.filter(email=email).first():
-            messages.error(request,
-                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-            return redirect(request.META.get("HTTP_REFERER", "/"))
-
-        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
-        if subscribe_user:
-            messages.error(request, f"{email} email address is already subscriber.")
-            return redirect(request.META.get("HTTP_REFERER", "/"))
-
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            messages.error(request, e.messages[0])
-            return redirect("/")
-
-        subscribe_model_instance = SubscribedUsers()
-        subscribe_model_instance.name = name
-        subscribe_model_instance.email = email
-        subscribe_model_instance.category = category
-        subscribe_model_instance.save()
-        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
-        return redirect(request.META.get("HTTP_REFERER", "/"))
-
-
+#def subscribe(request):
+#    if request.method == 'POST':
+#        name = request.POST.get('name', None)
+#        email = request.POST.get('email', None)
+#        category = request.POST.get('category', None)
+#
+#        if not email or not name:
+#            messages.error(request,
+#                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+#            return redirect("/")
+#
+#        if get_user_model().objects.filter(email=email).first():
+#            messages.error(request,
+#                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+#            return redirect(request.META.get("HTTP_REFERER", "/"))
+#
+#        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
+#        if subscribe_user:
+#            messages.error(request, f"{email} email address is already subscriber.")
+#            return redirect(request.META.get("HTTP_REFERER", "/"))
+#
+#        try:
+#            validate_email(email)
+#        except ValidationError as e:
+#            messages.error(request, e.messages[0])
+#            return redirect("/")
+#
+#        subscribe_model_instance = SubscribedUsers()
+#        subscribe_model_instance.name = name
+#        subscribe_model_instance.email = email
+#        subscribe_model_instance.category = category
+#        subscribe_model_instance.save()
+#        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
+#        return redirect(request.META.get("HTTP_REFERER", "/"))
+#
+#
 # @user_is_superuser
 # def newsletter(request):
 #    form = NewsletterForm()
@@ -234,3 +234,8 @@ class AddCategoryView(CreateView):
     template_name = 'add_category.html'
     fields = '__all__'
 
+
+class CategoryList(ListView):
+    model = Category
+    template_name = 'category_list.html'
+    context_object_name = 'category'

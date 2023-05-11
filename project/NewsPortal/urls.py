@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (PostList, PostDetailView, PostCreate, PostUpdate, PostDelete, SearchResultsView, ArticleDelete,
-                    ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, AppointmentView, subscribe, CategoryView,
-                    AddCategoryView)
+                    ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, AppointmentView, CategoryView,
+                    AddCategoryView, CategoryList)
 
 urlpatterns = [
     path('posts/', PostList.as_view(), name ='post_list'),
@@ -18,9 +18,10 @@ urlpatterns = [
 #path('news_by_category/', PostCategoryList.as_view(), name='news_by_category'),
     path('appointment_created/', AppointmentView.as_view(), name='appointment_created'),
     path('make_appointment/', AppointmentView.as_view(), name='make_appointment'),
-    path('subscribe/', subscribe, name='subscribe'),
+#path('subscribe/', subscribe, name='subscribe'),
 #path('news_by_category/<int:pk>/', PostCategoryList.as_view(), name='category-detail'),
     path('category/<str:cats>/', CategoryView, name='category'),
     path('add_category/', AddCategoryView.as_view(), name='add_category'),
+    path('category_list/', CategoryList.as_view(), name='category_list'),
 
 ]
