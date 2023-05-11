@@ -10,11 +10,12 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, PostCategory, Appointment, SubscribedUsers, Category
+from .models import Post, Appointment, SubscribedUsers, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 from django.contrib import messages
+from django.utils.text import slugify
 
 
 class PostList(ListView):
@@ -58,7 +59,6 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'new_post.html'
-    success_url = reverse_lazy('some_news')
     permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
@@ -87,7 +87,7 @@ class SearchResultsView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        category_id = self.request.GET.get('PostCategory')
+        category_id = self.request.GET.get('Category')
         object_list = Post.objects.filter(
             Q(title__icontains=query) |
             Q(text__icontains=query) |
@@ -96,7 +96,7 @@ class SearchResultsView(ListView):
             Q(type__icontains=query)
         )
         if category_id:
-            object_list = object_list.filter(categories__id=category_id)
+            object_list = object_list.filter(category__id=category_id)
         object_list = object_list.distinct()
         return object_list
 
@@ -144,18 +144,20 @@ def byebye(request):
     return redirect('logout')
 
 
-class PostCategoryList(ListView):
-    model = Post
-    template_name = 'news_by_category.html'
-    context_object_name = 'posts'
-    paginate_by = 10
+#class PostCategoryList(ListView):
+#    model = Post
+#    template_name = 'news_by_category.html'
+#    context_object_name = 'posts'
+#    paginate_by = 10
 
-    def frontpage(request):
-        title = 'This is a variable'
-        posts = Post.objects.all()
-        categories = Category.objects.all()
 
-        return render(request, 'news_by_category.html', {'title': title, 'posts': posts, 'categories': categories})  # Changed, 3
+#def news_by_category(request, category):
+#    news_items = Post.objects.filter(category=category)  # фильтруем новости по категории
+#    context = {
+#        'category': category,
+#        'news_items': news_items
+#    }
+#    return render(request, 'news_by_category.html', context)
 
 
 class AppointmentView(View):
@@ -186,11 +188,13 @@ def subscribe(request):
         category = request.POST.get('category', None)
 
         if not email or not name:
-            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            messages.error(request,
+                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
             return redirect("/")
 
         if get_user_model().objects.filter(email=email).first():
-            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            messages.error(request,
+                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
             return redirect(request.META.get("HTTP_REFERER", "/"))
 
         subscribe_user = SubscribedUsers.objects.filter(email=email).first()
@@ -213,11 +217,20 @@ def subscribe(request):
         return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
-
-#@user_is_superuser
-#def newsletter(request):
+# @user_is_superuser
+# def newsletter(request):
 #    form = NewsletterForm()
 #    form.fields['receiver'].initial = ','.join([active.email for active in SubscribedUsers.objects.all()])
 #    return render(request=request, template_name='newsletter.html', context={'form': form})
 
+
+def CategoryView(request, cats):
+    category_posts = Post.objects.filter(category=cats.replace('-', ' '))
+    return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
+
+
+class AddCategoryView(CreateView):
+    model = Category
+    template_name = 'add_category.html'
+    fields = '__all__'
 

@@ -29,7 +29,6 @@ News & Articles
                 <td> Дата публикации </td>
                 <td> Текст </td>
                 <td> Тип </td>
-                <td> Категория </td>
             </tr>
             {% for post in posts %}
             <tr>
@@ -37,7 +36,8 @@ News & Articles
                 <td> {{ post.time_in|date:'d M Y' }} </td>
                 <td> {{ post.text|truncatewords:15 }} </td>
                 <td> {{ post.type }} </td>
-                <td> {{ post.categories.first.name_category }} </td>
+                <td> <a href="{% url 'category' post.category %}">{{ post.category }} </a></td>
+
             </tr>
             {% endfor %}
         </table>

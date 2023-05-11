@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, PostCategory, SubscribedUsers
+from .models import Post, Category, SubscribedUsers
 
 
 class SubscribedUsersAdmin(admin.ModelAdmin):
@@ -8,7 +8,6 @@ class SubscribedUsersAdmin(admin.ModelAdmin):
 
 admin.site.register(Post)
 admin.site.register(Category)
-admin.site.register(PostCategory)
 admin.site.register(SubscribedUsers, SubscribedUsersAdmin)
 
 

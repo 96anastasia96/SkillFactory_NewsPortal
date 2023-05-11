@@ -9,7 +9,6 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 
-
 article = 'AR'
 news = 'NW'
 
@@ -35,11 +34,13 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name_category = models.CharField(max_length=40, unique=True)
-    subscribers = models.ManyToManyField(User)
+    name = models.CharField(max_length=40, unique=True)
 
     def __str__(self):
-        return f'{self.name_category}'
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('add_category')
 
 
 class Appointment(models.Model):
@@ -59,7 +60,7 @@ class Post(models.Model):
     author = models.ForeignKey(get_user_model(), default=1, on_delete=models.SET_DEFAULT)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField(Category, through='PostCategory')
+    category = models.CharField(max_length=255, default='music')
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
@@ -90,13 +91,13 @@ class Post(models.Model):
             return reverse('/', args=[str(self.id)])
 
 
-class PostCategory(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-
-    def __str__(self):
-        return f'{self.category}'
+# class PostCategory(models.Model):
+#    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+#    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+#
+#
+#    def __str__(self):
+#        return f'{self.category}'
 
 
 class Comment(models.Model):
@@ -132,4 +133,3 @@ class SubscribedUsers(models.Model):
 
     def __str__(self):
         return self.email
-

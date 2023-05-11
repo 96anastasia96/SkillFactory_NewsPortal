@@ -1,8 +1,13 @@
 from django import forms
-#from tinymce import TinyMCE
-
-from .models import Post
+# from tinymce import TinyMCE
+from .models import Post, Category
 from django.core.exceptions import ValidationError
+
+choices = Category.objects.all().values_list('name', 'name')
+choice_list = []
+
+for item in choices:
+    choice_list.append(item)
 
 
 class PostForm(forms.ModelForm):
@@ -10,14 +15,17 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = [
-            'title',
-            'text',
-            'author',
-            'categories',
-            'rating',
-            'type',
-        ]
+        fields = ('title', 'text', 'author', 'category', 'rating', 'type',)
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'author': forms.Select(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'class': 'form-control'}),
+            'category': forms.Select(choices=choices, attrs={'class': 'form-control'}),
+            'rating': forms.TextInput(attrs={'class': 'form-control'}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -29,8 +37,7 @@ class PostForm(forms.ModelForm):
             )
         return cleaned_data
 
-
-#class NewsletterForm(forms.Form):
+# class NewsletterForm(forms.Form):
 #    subject = forms.CharField()
 #    receivers = forms.CharField()
 #    message = forms.CharField(widget=TinyMCE(), label="Email content")

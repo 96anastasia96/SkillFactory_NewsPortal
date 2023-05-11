@@ -11,7 +11,7 @@ from django import forms
 class PostFilter(FilterSet):
     title = django_filters.Filter(field_name='title', lookup_expr='icontains')
     time_in = django_filters.DateFilter(field_name='time_in', lookup_expr='gte', widget=DateInput(attrs={'type': 'date'}))
-    categories = django_filters.ModelMultipleChoiceFilter(queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple(attrs={'categories': 'categories'}), label = 'Categories')
+    category = django_filters.ModelMultipleChoiceFilter(queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple(attrs={'category': 'category'}), label = 'Category')
 
     class Meta:
         model = Post
