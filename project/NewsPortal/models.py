@@ -1,9 +1,6 @@
-import os
 from datetime import *
-
 from django.contrib.auth import get_user_model
-from django.utils import timezone
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -95,15 +92,6 @@ class Post(models.Model):
             return reverse('/', args=[str(self.id)])
 
 
-# class PostCategory(models.Model):
-#    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-#
-#
-#    def __str__(self):
-#        return f'{self.category}'
-
-
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -129,22 +117,11 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
 
-#class SubscribedUsers(models.Model):
-#    name = models.CharField(max_length=100)
-#    email = models.EmailField(unique=True, max_length=100)
-#    created_date = models.DateTimeField('Date created', default=timezone.now)
-#    category = models.ManyToManyField(Category)
-#
-#    def __str__(self):
-#        return self.email
+class Subscription(models.Model):
+    email = models.EmailField(User.email, null=True, blank=True)
+    date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.email
 
 
-#class Profile(models.Model):
-#    user = models.OneToOneField(User, on_delete=models.CASCADE)
-#    subscribe = models.ManyToManyField(Category,
-#                                       related_name="subscribed_by",
-#                                       symmetrical=False,
-#                                       blank=True)
-#
-#    def __str__(self):
-#        return self.user.username

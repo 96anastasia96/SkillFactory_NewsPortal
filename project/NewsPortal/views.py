@@ -1,21 +1,18 @@
 from datetime import datetime
-from django.contrib.auth import logout, get_user_model
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django.core.mail import mail_admins
-from django.core.validators import validate_email
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, Appointment, Category
+from .models import Post, Appointment, Category, Subscription
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
-from django.contrib import messages
-from django.utils.text import slugify
 
 
 class PostList(ListView):
@@ -144,22 +141,6 @@ def byebye(request):
     return redirect('logout')
 
 
-#class PostCategoryList(ListView):
-#    model = Post
-#    template_name = 'news_by_category.html'
-#    context_object_name = 'posts'
-#    paginate_by = 10
-
-
-#def news_by_category(request, category):
-#    news_items = Post.objects.filter(category=category)  # фильтруем новости по категории
-#    context = {
-#        'category': category,
-#        'news_items': news_items
-#    }
-#    return render(request, 'news_by_category.html', context)
-
-
 class AppointmentView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'make_appointment.html', {})
@@ -239,3 +220,9 @@ class CategoryList(ListView):
     model = Category
     template_name = 'category_list.html'
     context_object_name = 'category'
+
+
+
+
+
+

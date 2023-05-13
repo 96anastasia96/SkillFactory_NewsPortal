@@ -5,17 +5,12 @@
 {% if category_posts %}
 
     <h1>{{ cats }} </h1>
-    <form method="POST">
-        {% csrf_token %}
-        {% if category in user.subscribed.cats %}
-            <button class="btn btn-outline-danger" name="subscribe" value="unsubscribe" type="submit">Отписаться от категории {{cats}}
-            </button>
 
-        {% else %}
-             <button class="btn btn-outline-success" name="subscribe" value="subscribe" type="submit">Подписаться на категорию {{cats}}
-            </button>
-        {% endif %}
+   <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Подписаться</button>
     </form>
+
     <ul>
     {% for post in category_posts %}
 
