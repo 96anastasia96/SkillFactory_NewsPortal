@@ -32,16 +32,18 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    subscribe = models.ManyToManyField(User,
-                                       related_name="subscribed_by",
-                                       symmetrical=False,
-                                       blank=True)
+    subscribe = models.ManyToManyField(User)
 
     def __str__(self):
         return f'{self.name.title()}'
 
     def get_absolute_url(self):
         return reverse('add_category')
+
+
+class CategorySubscribe(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    subscriber = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
 class Appointment(models.Model):
@@ -90,6 +92,11 @@ class Post(models.Model):
             return reverse('some_news', args=[str(self.id)])
         else:
             return reverse('/', args=[str(self.id)])
+
+
+class PostCategory(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):

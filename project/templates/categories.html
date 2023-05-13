@@ -6,10 +6,7 @@
 
     <h1>{{ cats }} </h1>
 
-   <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Подписаться</button>
-    </form>
+<p><a href="subscribe">Подписаться</a></p>
 
     <ul>
     {% for post in category_posts %}

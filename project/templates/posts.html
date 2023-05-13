@@ -36,7 +36,7 @@ News & Articles
                 <td> {{ post.time_in|date:'d M Y' }} </td>
                 <td> {{ post.text|truncatewords:15 }} </td>
                 <td> {{ post.type }} </td>
-                <td> <a href="{% url 'category' post.category %}">{{ post.category }} </a></td>
+                <td> {{ post.category }} </td>
 
             </tr>
             {% endfor %}

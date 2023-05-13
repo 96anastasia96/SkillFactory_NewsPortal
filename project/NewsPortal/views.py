@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, Appointment, Category, Subscription
+from .models import Post, Appointment, Category, Subscription, CategorySubscribe
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
@@ -162,52 +162,20 @@ class AppointmentView(View):
         return redirect('make_appointment')
 
 
-#def subscribe(request):
-#    if request.method == 'POST':
-#        name = request.POST.get('name', None)
-#        email = request.POST.get('email', None)
-#        category = request.POST.get('category', None)
-#
-#        if not email or not name:
-#            messages.error(request,
-#                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-#            return redirect("/")
-#
-#        if get_user_model().objects.filter(email=email).first():
-#            messages.error(request,
-#                           f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-#            return redirect(request.META.get("HTTP_REFERER", "/"))
-#
-#        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
-#        if subscribe_user:
-#            messages.error(request, f"{email} email address is already subscriber.")
-#            return redirect(request.META.get("HTTP_REFERER", "/"))
-#
-#        try:
-#            validate_email(email)
-#        except ValidationError as e:
-#            messages.error(request, e.messages[0])
-#            return redirect("/")
-#
-#        subscribe_model_instance = SubscribedUsers()
-#        subscribe_model_instance.name = name
-#        subscribe_model_instance.email = email
-#        subscribe_model_instance.category = category
-#        subscribe_model_instance.save()
-#        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
-#        return redirect(request.META.get("HTTP_REFERER", "/"))
-#
-#
-# @user_is_superuser
-# def newsletter(request):
-#    form = NewsletterForm()
-#    form.fields['receiver'].initial = ','.join([active.email for active in SubscribedUsers.objects.all()])
-#    return render(request=request, template_name='newsletter.html', context={'form': form})
+#def CategoryView(request, cats):
+#    category_posts = Post.objects.filter(category=cats.replace('-', ' '))
+#    return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
 
+class CategoryPost(DetailView):
+    model = Category
+    template_name = 'category_list.html'
+    context_object_name = 'postcategory'
 
-def CategoryView(request, cats):
-    category_posts = Post.objects.filter(category=cats.replace('-', ' '))
-    return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(category=kwargs['object'])
+        return context
+
 
 
 class AddCategoryView(CreateView):
@@ -222,7 +190,27 @@ class CategoryList(ListView):
     context_object_name = 'category'
 
 
+#class CategorySubscribed(View):
+#    model = User
+#    context_object_name = 'subscribe'
+#
+#
+#    def get_subscribed(self, request):
+#        user = request.user
+#        if not Category.objects.filter(subscribe=user).exists():
+#            Category.subscribe.add(request.user)
+#        return redirect('category_subscribe')
+#
+#    def post(self, request):
+#        self.get_subscribed(request)
+#        print()
+#        return super().post(request)
+#
 
+def subscribe_to_category(request, pk):
 
+    current_user = request.user
+    CategorySubscribe.objects.create(category=Category.objects.get(pk=pk), subscriber=User.objects.get(pk=current_user.id))
 
+    return render(request, 'subscribe.html')
 
