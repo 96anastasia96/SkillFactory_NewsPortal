@@ -4,9 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.mail import mail_admins, send_mail
-from django.db.models.signals import post_save, m2m_changed
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -17,24 +15,24 @@ from .forms import PostForm
 from django.db.models import Q
 
 
-def notify_new_post_in_category(objects, action):
-    if action == 'post_add':
-        subscriber = []
-        for category_subscribe in CategorySubscribe.objects.filter(category__in=objects.categories.all()):
-            subscriber.append(category_subscribe.subscriber.email)
-
-        send_mail(
-            subject='Здравствуй. Новая статья в твоём любимом разделе!',
-            html_message=render_to_string('new_post.html',
-                                          context={'post': objects,
-                                               'link': f'http://127.0.0.1:8000/news/{objects.id}'}),
-
-
-            message="Hello",
-            recipient_list=subscriber,
-        )
-
-        return redirect('new_post')
+#def notify_new_post_in_category(objects, action):
+#    if action == 'post_add':
+#        subscriber = []
+#        for category_subscribe in CategorySubscribe.objects.filter(category__in=objects.categories.all()):
+#            subscriber.append(category_subscribe.subscriber.email)
+#
+#        send_mail(
+#            subject='Здравствуй. Новая статья в твоём любимом разделе!',
+#            html_message=render_to_string('new_post.html',
+#                                          context={'post': objects,
+#                                               'link': f'http://127.0.0.1:8000/news/{objects.id}'}),
+#
+#
+#            message="Hello",
+#            recipient_list=subscriber,
+#        )
+#
+#        return redirect('new_post')
 
 
 class PostList(ListView):
@@ -84,6 +82,23 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         response = super().form_valid(form)
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
         return response
+
+    def new_post_in_category(self, subscriber, *args, **kwargs):
+        post = Post()
+        post.save()
+
+        mail_admins(
+            title=post.title,
+            message=post.message('Новая статья в твоем любимом разделе'),
+        )
+
+        send_mail(
+            recipient_list=subscriber(CategorySubscribe),
+            message='Новая статья в твоем любимом разделе',
+            title=post.title,
+        )
+
+        return redirect('new_post')
 
 
 class PostUpdate(PermissionRequiredMixin, UpdateView):

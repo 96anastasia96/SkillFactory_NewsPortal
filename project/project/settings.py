@@ -52,6 +52,8 @@ INSTALLED_APPS = [
 
 ]
 
+DEFAULT_FROM_EMAIL = 'su8scriber@yandex.ru'
+
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -156,7 +158,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
 
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
