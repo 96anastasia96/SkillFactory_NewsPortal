@@ -3,22 +3,45 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.core.mail import mail_admins
+from django.core.mail import mail_admins, send_mail
+from django.db.models.signals import post_save, m2m_changed
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, Appointment, Category, Subscription, CategorySubscribe
+from .models import Post, Appointment, Category, CategorySubscribe
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 
 
+def notify_new_post_in_category(objects, action, **kwargs):
+    if action == 'post_add':
+        subscriber = []
+        for category_subscribe in CategorySubscribe.objects.filter(category__in=objects.categories.all()):
+            subscriber.append(category_subscribe.subscriber.email)
+
+        send_mail(
+            subject='Здравствуй. Новая статья в твоём любимом разделе!',
+            html_message=render_to_string('new_post.html',
+                                          context={'post': objects,
+                                               'link': f'http://127.0.0.1:8000/news/{objects.id}'}),
+
+
+            message="Hello",
+            from_email='su8scriber@yandex.ru',
+            recipient_list=subscriber,
+        )
+
+        return redirect('new_post')
+
+
 class PostList(ListView):
     model = Post
     ordering = '-time_in'
-    template_name = 'posts.html'
+    template_name = 'posts/posts.html'
     context_object_name = 'posts'
     paginate_by = 10
 
@@ -43,7 +66,7 @@ class PostList(ListView):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'some_news.html'
+    template_name = 'posts/some_news.html'
     context_object_name = 'some_news'
 
     def get_context_data(self, **kwargs):
@@ -55,7 +78,7 @@ class PostDetailView(DetailView):
 class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
-    template_name = 'new_post.html'
+    template_name = 'posts/new_post.html'
     permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
@@ -67,14 +90,14 @@ class PostCreate(PermissionRequiredMixin, CreateView):
 class PostUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
-    template_name = 'post_edit.html'
+    template_name = 'posts/post_edit.html'
     success_url = reverse_lazy('some_news')
     permission_required = ('NewsPortal.change_post',)
 
 
 class PostDelete(DeleteView):
     model = Post
-    template_name = 'post_delete.html'
+    template_name = 'posts/post_delete.html'
     success_url = reverse_lazy('post_list')
 
 
@@ -100,7 +123,7 @@ class SearchResultsView(ListView):
 
 class ArticleDetailView(DetailView):
     model = Post
-    template_name = 'article.html'
+    template_name = 'articles/article.html'
     context_object_name = 'article'
 
     def get_context_data(self, **kwargs):
@@ -112,7 +135,7 @@ class ArticleDetailView(DetailView):
 class ArticleCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
-    template_name = 'new_article.html'
+    template_name = 'articles/new_article.html'
     permission_required = ('NewsPortal.add_post',)
 
     def form_valid(self, form):
@@ -124,14 +147,14 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
 class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
-    template_name = 'article_edit.html'
+    template_name = 'articles/article_edit.html'
     success_url = reverse_lazy('new_article')
     permission_required = ('NewsPortal.change_post',)
 
 
 class ArticleDelete(DeleteView):
     model = Post
-    template_name = 'article_delete.html'
+    template_name = 'articles/article_delete.html'
     success_url = reverse_lazy('posts')
 
 
@@ -143,7 +166,7 @@ def byebye(request):
 
 class AppointmentView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'make_appointment.html', {})
+        return render(request, 'appointment/make_appointment.html', {})
 
     def post(self, request, *args, **kwargs):
         appointment = Appointment(
@@ -162,13 +185,9 @@ class AppointmentView(View):
         return redirect('make_appointment')
 
 
-#def CategoryView(request, cats):
-#    category_posts = Post.objects.filter(category=cats.replace('-', ' '))
-#    return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
-
 class CategoryPost(DetailView):
     model = Category
-    template_name = 'category_list.html'
+    template_name = 'categories/category_list.html'
     context_object_name = 'postcategory'
 
     def get_context_data(self, **kwargs):
@@ -177,35 +196,17 @@ class CategoryPost(DetailView):
         return context
 
 
-
 class AddCategoryView(CreateView):
     model = Category
-    template_name = 'add_category.html'
+    template_name = 'categories/add_category.html'
     fields = '__all__'
 
 
 class CategoryList(ListView):
     model = Category
-    template_name = 'category_list.html'
+    template_name = 'categories/category_list.html'
     context_object_name = 'category'
 
-
-#class CategorySubscribed(View):
-#    model = User
-#    context_object_name = 'subscribe'
-#
-#
-#    def get_subscribed(self, request):
-#        user = request.user
-#        if not Category.objects.filter(subscribe=user).exists():
-#            Category.subscribe.add(request.user)
-#        return redirect('category_subscribe')
-#
-#    def post(self, request):
-#        self.get_subscribed(request)
-#        print()
-#        return super().post(request)
-#
 
 def subscribe_to_category(request, pk):
 

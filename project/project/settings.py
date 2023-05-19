@@ -165,7 +165,6 @@ EMAIL_HOST_USER = 'su8scriber'  # ваше имя пользователя, на
 EMAIL_HOST_PASSWORD = 'ylzebmxomcyretaa'  # пароль от почты
 EMAIL_USE_SSL = True
 ADMINS = [
-    ('Anastasia', 'kissodessa@gmail.com'),
     # список всех админов в формате ('имя', 'их почта')
 ]
 SERVER_EMAIL = 'su8scriber@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке

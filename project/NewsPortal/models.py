@@ -63,7 +63,7 @@ class Post(models.Model):
     author = models.ForeignKey(get_user_model(), default=1, on_delete=models.SET_DEFAULT)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=255, default='music')
+    category = models.CharField(max_length=255, default='1')
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
@@ -122,13 +122,5 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
-
-
-class Subscription(models.Model):
-    email = models.EmailField(User.email, null=True, blank=True)
-    date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.email
 
 
