@@ -17,7 +17,7 @@ from .forms import PostForm
 from django.db.models import Q
 
 
-def notify_new_post_in_category(objects, action, **kwargs):
+def notify_new_post_in_category(objects, action):
     if action == 'post_add':
         subscriber = []
         for category_subscribe in CategorySubscribe.objects.filter(category__in=objects.categories.all()):
