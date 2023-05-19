@@ -3,8 +3,10 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.core.mail import mail_admins, send_mail
+from django.core.mail import mail_admins, send_mail, mail_managers, EmailMultiAlternatives
+from django.db.models.signals import post_save
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -81,24 +83,18 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
+        post = self.object
+        send_mail(
+            subject=f'Здравствуй. Новая статья в твоём любимом разделе! {post.category}',
+            message=post.text[:20],
+            from_email='su8scriber@yandex.ru',
+            recipient_list=['su8scriber1@gmail.com'],
+        )
         return response
 
-    def new_post_in_category(self, subscriber, *args, **kwargs):
-        post = Post()
-        post.save()
 
-        mail_admins(
-            title=post.title,
-            message=post.message('Новая статья в твоем любимом разделе'),
-        )
 
-        send_mail(
-            recipient_list=subscriber(CategorySubscribe),
-            message='Новая статья в твоем любимом разделе',
-            title=post.title,
-        )
 
-        return redirect('new_post')
 
 
 class PostUpdate(PermissionRequiredMixin, UpdateView):
@@ -190,13 +186,42 @@ class AppointmentView(View):
         )
         appointment.save()
 
-        # отправляем письмо всем админам по аналогии с send_mail, только здесь получателя указывать не надо
+        html_content = render_to_string(
+            'appointment/appointment_created.html',
+            {
+                'appointment': appointment,
+            }
+        )
+
+        msg = EmailMultiAlternatives(
+            subject=f'{appointment.client_name} {appointment.date.strftime("%Y-%M-%d")}',
+            body=appointment.message,  # это то же, что и message
+            from_email='su8scriber@yandex.ru',
+            to=['su8scriber1@gmail.com'],  # это то же, что и recipients_list
+        )
+        msg.attach_alternative(html_content, "appointment/appointment_created.html")  # добавляем html
+
         mail_admins(
             subject=f'{appointment.client_name} {appointment.date.strftime("%d %m %Y")}',
             message=appointment.message,
         )
 
+        msg.send()
+
         return redirect('make_appointment')
+
+
+def notify_managers_appointment(sender, instance, created, **kwargs):
+    subject = f'{instance.client_name} {instance.date.strftime("%d %m %Y")}'
+
+    mail_managers(
+        subject=subject,
+        message=instance.message,
+    )
+
+
+# коннектим наш сигнал к функции обработчику и указываем, к какой именно модели после сохранения привязать функцию
+post_save.connect(notify_managers_appointment, sender=Appointment)
 
 
 class CategoryPost(DetailView):

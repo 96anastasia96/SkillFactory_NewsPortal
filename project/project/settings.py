@@ -145,7 +145,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = '/accounts/login/'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -168,5 +168,7 @@ EMAIL_HOST_PASSWORD = 'ylzebmxomcyretaa'  # пароль от почты
 EMAIL_USE_SSL = True
 ADMINS = [
     # список всех админов в формате ('имя', 'их почта')
+    ('Anastasia', 'kissodessa@gmail.com'),
+    ('Anastasia2', 'ak96ak96@yandex.ru'),
 ]
 SERVER_EMAIL = 'su8scriber@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
