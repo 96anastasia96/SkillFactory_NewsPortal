@@ -31,7 +31,6 @@ def notify_new_post_in_category(objects, action):
 
 
             message="Hello",
-            from_email='su8scriber@yandex.ru',
             recipient_list=subscriber,
         )
 
