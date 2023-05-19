@@ -7,7 +7,7 @@ from django.core.mail import mail_admins, send_mail, mail_managers, EmailMultiAl
 from django.db.models.signals import post_save
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
@@ -84,9 +84,10 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         response = super().form_valid(form)
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
         post = self.object
+        post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
         send_mail(
-            subject=f'Здравствуй. Новая статья в твоём любимом разделе! {post.category}',
-            message=post.text[:20],
+            subject=f'Здравствуй. Новая статья в твоём любимом разделе "{post.category}"',
+            message=f'{post.text[:20]}...\n\n Ссылка на новый пост: {post_url}',
             from_email='su8scriber@yandex.ru',
             recipient_list=['su8scriber1@gmail.com'],
         )
