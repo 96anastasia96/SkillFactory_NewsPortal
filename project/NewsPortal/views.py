@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import username as username
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -85,11 +87,13 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
         post = self.object
         post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
+        subscribed_users = self.object.CategorySubscribe.subscriber.all()
+
         send_mail(
             subject=f'Здравствуй. Новая статья в твоём любимом разделе "{post.category}"',
             message=f'{post.text[:20]}...\n\n Ссылка на новый пост: {post_url}',
             from_email='su8scriber@yandex.ru',
-            recipient_list=['su8scriber1@gmail.com'],
+            recipient_list=(['su8scriber1@gmail.com'], [user.email for user in subscribed_users])
         )
         return response
 
