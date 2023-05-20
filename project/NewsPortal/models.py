@@ -40,9 +40,6 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('add_category')
 
-    def get_subscribers(self):
-        return self.subscribe.all()
-
 
 
 class CategorySubscribe(models.Model):

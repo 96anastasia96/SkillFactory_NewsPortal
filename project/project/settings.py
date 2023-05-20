@@ -161,14 +161,15 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
 
-EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
-EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
-EMAIL_HOST_USER = 'su8scriber'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = 'ylzebmxomcyretaa'  # пароль от почты
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'kissodessa'
+EMAIL_HOST_PASSWORD = 'qmgbdqjnmkdchycu'
 EMAIL_USE_SSL = True
 ADMINS = [
     # список всех админов в формате ('имя', 'их почта')
     ('Anastasia', 'kissodessa@gmail.com'),
     ('Anastasia2', 'ak96ak96@yandex.ru'),
 ]
-SERVER_EMAIL = 'su8scriber@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+
+SERVER_EMAIL = 'kissodessa@gmail.com'
