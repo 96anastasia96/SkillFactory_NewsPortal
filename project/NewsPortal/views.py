@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.mail import mail_admins, send_mail, mail_managers, EmailMultiAlternatives
 from django.db.models.signals import post_save
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
@@ -87,18 +87,15 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
         post = self.object
         post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
-        subscribed_users = self.object.CategorySubscribe.subscriber.all()
+        subscribed_users = self.object.category.get_subscribers()
 
         send_mail(
             subject=f'Здравствуй. Новая статья в твоём любимом разделе "{post.category}"',
             message=f'{post.text[:20]}...\n\n Ссылка на новый пост: {post_url}',
             from_email='su8scriber@yandex.ru',
-            recipient_list=(['su8scriber1@gmail.com'], [user.email for user in subscribed_users])
+            recipient_list=(['su8scriber1@gmail.com'], [user.email for user in subscribed_users]),
         )
         return response
-
-
-
 
 
 

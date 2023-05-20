@@ -1,5 +1,5 @@
 import django_filters
-from django.forms import DateInput, CheckboxSelectMultiple
+from django.forms import DateInput
 from django_filters import FilterSet
 from .models import Post, Category
 from django import forms
