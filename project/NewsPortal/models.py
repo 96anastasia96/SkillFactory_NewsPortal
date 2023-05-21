@@ -64,7 +64,7 @@ class Post(models.Model):
     author = models.ForeignKey(get_user_model(), default=1, on_delete=models.SET_DEFAULT)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=255, default='Образование')
+    category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)

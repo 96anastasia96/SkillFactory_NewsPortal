@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 
 ]
 
-DEFAULT_FROM_EMAIL = 'su8scriber@yandex.ru'
+DEFAULT_FROM_EMAIL = 'kissodessa@gmail.com'
 
 SITE_ID = 1
 
@@ -171,5 +171,4 @@ ADMINS = [
     ('Anastasia', 'kissodessa@gmail.com'),
     ('Anastasia2', 'ak96ak96@yandex.ru'),
 ]
-
 SERVER_EMAIL = 'kissodessa@gmail.com'

@@ -1,6 +1,4 @@
 from datetime import datetime
-
-import username as username
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -17,6 +15,7 @@ from .models import Post, Appointment, Category, CategorySubscribe
 from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
+from project import settings
 
 
 #def notify_new_post_in_category(objects, action):
@@ -88,11 +87,17 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
         post = self.object
         post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
+        categories = post.category.all()
+        subscribers_emails = []
+        for category in categories:
+            subscribers = category.subscribe.all()
+            subscribers_emails += [sub.email for sub in subscribers]
+
         send_mail(
-            subject=f'{post.title}"{post.category}"',
+            subject=f'{post.title}"{post.category.name}"',
             message=f'Здравствуй. Новая статья в твоём любимом разделе {post.text[:50]}\n\n Ссылка на новый пост: {post_url}',
-            from_email='kissodessa@gmail.com',
-            recipient_list=['su8scriber1@gmail.com']
+            from_email= settings.DEFAULT_FROM_EMAIL,
+            recipient_list= subscribers_emails
         )
         return response
 

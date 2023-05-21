@@ -2,12 +2,6 @@ from django import forms
 from .models import Post, Category
 from django.core.exceptions import ValidationError
 
-choices = Category.objects.all().values_list('name', 'name')
-choice_list = []
-
-for item in choices:
-    choice_list.append(item)
-
 
 class PostForm(forms.ModelForm):
     text = forms.CharField(min_length=20)
@@ -19,8 +13,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
-            'text': forms.Textarea(attrs={'class': 'form-control'}),
-            'category': forms.Select(choices=choices, attrs={'class': 'form-control'}),
+            'text': forms.TextInput(attrs={'class': 'form-control'}),
             'rating': forms.TextInput(attrs={'class': 'form-control'}),
             'type': forms.Select(attrs={'class': 'form-control'}),
 
