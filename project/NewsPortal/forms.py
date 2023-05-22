@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Category
+from .models import Post
 from django.core.exceptions import ValidationError
 
 
@@ -14,9 +14,9 @@ class PostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'text': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'rating': forms.TextInput(attrs={'class': 'form-control'}),
             'type': forms.Select(attrs={'class': 'form-control'}),
-
         }
 
     def clean(self):

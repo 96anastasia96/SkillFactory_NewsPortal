@@ -7,7 +7,10 @@ News & Articles
 {% endblock title %}
 
 {% block content %}
-
+<div class="card">
+        <p class="card-text">Количество созданных постов за всё время: {{user_posts_count}}</p>
+        <p classs="card-text"> Количество созданных постов за 24 часа: {{user_today_posts_count}}</p>
+</div>
 <h1><b> Все новости и статьи </b></h1>
 <a href="/news/create/">Создать новость</a>
 <a href="/article/create/">Создать статью</a>
@@ -22,6 +25,9 @@ News & Articles
     </form>
 
 <hr>
+
+
+
     {% if posts %}
         <table>
             <tr>
@@ -31,6 +37,7 @@ News & Articles
                 <td> Тип </td>
             </tr>
             {% for post in posts %}
+
             <tr>
                 <td><a href="{% url 'some_news' post.pk %}">{{ post.title }}</a></td>
                 <td> {{ post.time_in|date:'d M Y' }} </td>
@@ -41,6 +48,7 @@ News & Articles
             </tr>
             {% endfor %}
         </table>
+
     {% else %}
         <h2> Нет новостей! </h2>
     {% endif %}

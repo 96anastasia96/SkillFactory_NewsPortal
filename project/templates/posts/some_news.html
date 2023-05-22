@@ -19,7 +19,9 @@ Some_news
 <h2>{{ some_news.time_in|date:'M d Y' }}</h2>
 <h2>{{ some_news.type }}</h2>
 <h2>{{ some_news.author }}</h2>
-<h2>{{ some_news.category }}</a></h2>
+{% for cat in some_news.category.all %}
+<h2>{{ cat }}</a></h2>
+{% endfor %}
 
 <hr>
 <h3><em> Содержание: </em></h3>

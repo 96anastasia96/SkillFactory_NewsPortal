@@ -1,13 +1,15 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.core.mail import mail_admins, send_mail, mail_managers, EmailMultiAlternatives
-from django.db.models.signals import post_save
-from django.shortcuts import redirect, render, get_object_or_404
+from django.core.mail import mail_admins, send_mail, EmailMultiAlternatives
+from django.http import HttpResponseBadRequest
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
@@ -18,26 +20,7 @@ from django.db.models import Q
 from project import settings
 
 
-#def notify_new_post_in_category(objects, action):
-#    if action == 'post_add':
-#        subscriber = []
-#        for category_subscribe in CategorySubscribe.objects.filter(category__in=objects.categories.all()):
-#            subscriber.append(category_subscribe.subscriber.email)
-#
-#        send_mail(
-#            subject='Здравствуй. Новая статья в твоём любимом разделе!',
-#            html_message=render_to_string('new_post.html',
-#                                          context={'post': objects,
-#                                               'link': f'http://127.0.0.1:8000/news/{objects.id}'}),
-#
-#
-#            message="Hello",
-#            recipient_list=subscriber,
-#        )
-#
-#        return redirect('new_post')
-
-
+# Список всех новостей и статей
 class PostList(ListView):
     model = Post
     ordering = '-time_in'
@@ -58,12 +41,21 @@ class PostList(ListView):
 
     def get_context_data(self, **kwards):
         context = super().get_context_data(**kwards)
+        today = datetime.utcnow().date()
+        # фильтр по текущему пользователю и дате создания
+        q_user = Q(author=self.request.user)
+        q_date = Q(time_in__gte=today, time_in__lt=today + timedelta(days=1))
+        today_posts = self.model.objects.filter(q_user, q_date)
+        user_posts_count = self.model.objects.filter(author=self.request.user).count()
+        context['user_today_posts_count'] = today_posts.count()
+        context['user_posts_count'] = user_posts_count
         context['time_now'] = datetime.utcnow()
         context['next_post'] = None
         context['filterset'] = self.filterset
         return context
 
 
+# Конкретная новость
 class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/some_news.html'
@@ -75,6 +67,7 @@ class PostDetailView(DetailView):
         return context
 
 
+# Создание новости
 class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
@@ -83,39 +76,60 @@ class PostCreate(PermissionRequiredMixin, CreateView):
 
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
-        post = self.object
-        post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
-        categories = post.category.all()
-        subscribers_emails = []
-        for category in categories:
-            subscribers = category.subscribe.all()
-            subscribers_emails += [sub.email for sub in subscribers]
+        # Фильтр по автору и дате создания (за последние 24 часа)
+        author = self.request.user
+        now = timezone.now()
+        since_24_hours = now - timezone.timedelta(days=1)
+        posts_count = Post.objects.filter(author=author, time_in__gte=since_24_hours).count()
+        if posts_count >= 3:
+            # Если пользователь уже создал 3 или более постов за последние 24 часа, то отправляем ошибку
+            return HttpResponseBadRequest(f'{self.request.user.username}, Вы превысили лимит по количеству создаваемых'
+                                          f' постов в сутки.')
+        else:
+            # Иначе, создаем новый пост
+            response = super().form_valid(form)
+            self.success_url = reverse_lazy('new_post', kwargs={'pk': self.object.id})
+            post = self.object
+            post_url = self.request.build_absolute_uri(reverse('some_news', args=[post.pk]))
+            categories = post.category.all()
+            category_name = []
+            subscribers_emails = []
+            subscribers_names = []
 
-        send_mail(
-            subject=f'{post.title}"{post.category.name}"',
-            message=f'Здравствуй. Новая статья в твоём любимом разделе {post.text[:50]}\n\n Ссылка на новый пост: {post_url}',
-            from_email= settings.DEFAULT_FROM_EMAIL,
-            recipient_list= subscribers_emails
-        )
-        return response
+            for category in categories:
+                category_name.append(category.name)
+                subscribers = category.subscribe.all()
+                subscribers_emails += [sub.email for sub in subscribers]
+
+            for subscriber in subscribers:
+                username = subscriber.username
+
+            send_mail(
+                subject=f'{post.title}"{category_name}"',
+                message=f'Здравствуй {username}. Новая статья в твоём любимом разделе! {post.text[:50]}'
+                        f'\n\n Ссылка на новый пост: {post_url}',
+                from_email= settings.DEFAULT_FROM_EMAIL,
+                recipient_list= subscribers_emails
+            )
+            return response
 
 
+# Редактирование новости
 class PostUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'posts/post_edit.html'
-    success_url = reverse_lazy('some_news')
     permission_required = ('NewsPortal.change_post',)
 
 
+# Удаление новости
 class PostDelete(DeleteView):
     model = Post
     template_name = 'posts/post_delete.html'
     success_url = reverse_lazy('post_list')
 
 
+# Поиск
 class SearchResultsView(ListView):
     model = Post
     template_name = 'search.html'
@@ -136,6 +150,7 @@ class SearchResultsView(ListView):
         return object_list
 
 
+# Конкретная статья
 class ArticleDetailView(DetailView):
     model = Post
     template_name = 'articles/article.html'
@@ -147,6 +162,7 @@ class ArticleDetailView(DetailView):
         return context
 
 
+# Создание статьи
 class ArticleCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
@@ -159,6 +175,7 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
         return response
 
 
+# Редактирование статьи
 class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
@@ -167,12 +184,14 @@ class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('NewsPortal.change_post',)
 
 
+# Удаление статьи:
 class ArticleDelete(DeleteView):
     model = Post
     template_name = 'articles/article_delete.html'
     success_url = reverse_lazy('posts')
 
 
+# Выход
 @login_required(login_url='/accounts/login/')
 def byebye(request):
     logout(request)
@@ -216,22 +235,10 @@ class AppointmentView(View):
         return redirect('make_appointment')
 
 
-def notify_managers_appointment(sender, instance, created, **kwargs):
-    subject = f'{instance.client_name} {instance.date.strftime("%d %m %Y")}'
-
-    mail_managers(
-        subject=subject,
-        message=instance.message,
-    )
-
-
-# коннектим наш сигнал к функции обработчику и указываем, к какой именно модели после сохранения привязать функцию
-post_save.connect(notify_managers_appointment, sender=Appointment)
-
-
+# Категория:
 class CategoryPost(DetailView):
     model = Category
-    template_name = 'categories/category_list.html'
+    template_name = 'categories/post_category.html'
     context_object_name = 'postcategory'
 
     def get_context_data(self, **kwargs):
@@ -240,18 +247,21 @@ class CategoryPost(DetailView):
         return context
 
 
+# Добавление категории:
 class AddCategoryView(CreateView):
     model = Category
     template_name = 'categories/add_category.html'
     fields = '__all__'
 
 
+# Список категорий:
 class CategoryList(ListView):
     model = Category
     template_name = 'categories/category_list.html'
     context_object_name = 'category'
 
 
+# Функция позволяющая подписаться на категорию
 def subscribe_to_category(request, pk):
 
     current_user = request.user

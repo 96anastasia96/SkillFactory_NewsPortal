@@ -1,4 +1,6 @@
 from datetime import *
+
+from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
@@ -29,10 +31,19 @@ class Author(models.Model):
         self.user_rating = (int(posts_rating['rating__sum']) * 3) + int(comment_rating) + int(rating_comment_to_posts)
         self.save()
 
+    def can_create_post(self):
+        today = date.today()
+        post_count = Post.objects.filter(author=self, created_at__date=today).count()
+        max_posts_per_day = 3  # максимальное количество постов в день
+        if post_count < max_posts_per_day:
+            return True
+        else:
+            return False
+
 
 class Category(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    subscribe = models.ManyToManyField(User)
+    subscribe = models.ManyToManyField(User, through='CategorySubscribe')
 
     def __str__(self):
         return f'{self.name.title()}'
@@ -61,13 +72,14 @@ class Appointment(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(get_user_model(), default=1, on_delete=models.SET_DEFAULT)
+    author = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     type = models.CharField(max_length=7, choices=TYPE)
     time_in = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
+
 
     def like(self):
         self.rating += 1
@@ -125,3 +137,6 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
 
+class DailyPostLimit(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    limit = models.PositiveIntegerField(default=3)
