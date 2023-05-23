@@ -7,3 +7,4 @@ def send_mails():
 
 def send_mails_managers():
     print('Hi managers')
+

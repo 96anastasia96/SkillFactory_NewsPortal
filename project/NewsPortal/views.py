@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -94,7 +93,6 @@ class PostCreate(PermissionRequiredMixin, CreateView):
             categories = post.category.all()
             category_name = []
             subscribers_emails = []
-            subscribers_names = []
 
             for category in categories:
                 category_name.append(category.name)
@@ -112,6 +110,18 @@ class PostCreate(PermissionRequiredMixin, CreateView):
                 recipient_list= subscribers_emails
             )
             return response
+
+
+def posts_created_last_week(request):
+    now = timezone.now()
+    since_one_week = now - timezone.timedelta(weeks=1)
+    posts = Post.objects.filter(time_in__gte=since_one_week).order_by('-time_in')
+
+    context = {
+        'posts': posts,
+    }
+
+    return render(request, 'posts/posts_created_last_week.html', context)
 
 
 # Редактирование новости

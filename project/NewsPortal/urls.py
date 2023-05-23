@@ -1,10 +1,11 @@
 from django.urls import path
 from .views import (PostList, PostDetailView, PostCreate, PostUpdate, PostDelete, SearchResultsView, ArticleDelete,
                     ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, AppointmentView, CategoryPost,
-                    AddCategoryView, CategoryList, subscribe_to_category)
+                    AddCategoryView, CategoryList, subscribe_to_category, posts_created_last_week)
 
 urlpatterns = [
-    path('posts/', PostList.as_view(), name ='post_list'),
+    path('posts/', PostList.as_view(), name='post_list'),
+    path('posts_created_last_week/', posts_created_last_week, name='posts_created_last_week'),
     path('news/<int:pk>/', PostDetailView.as_view(), name='some_news'),
     path('news/create/', PostCreate.as_view(), name='new_post'),
     path('news/<int:pk>/edit/', PostUpdate.as_view(), name='post_edit'),
