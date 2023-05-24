@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.mail import mail_admins, send_mail, EmailMultiAlternatives
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
@@ -17,6 +17,15 @@ from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 from project import settings
+from .tasks import hello, printer
+
+
+class IndexView(View):
+    def get(self, request):
+        printer.apply_async([10],
+                            eta = datetime.now() + timedelta(seconds=5))
+        hello.delay()
+        return HttpResponse('Hello!')
 
 
 # Список всех новостей и статей
