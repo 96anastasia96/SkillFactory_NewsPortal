@@ -17,15 +17,6 @@ from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 from project import settings
-from .tasks import hello, printer
-
-
-class IndexView(View):
-    def get(self, request):
-        printer.apply_async([10],
-                            eta = datetime.now() + timedelta(seconds=5))
-        hello.delay()
-        return HttpResponse('Hello!')
 
 
 # Список всех новостей и статей
