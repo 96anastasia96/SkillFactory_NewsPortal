@@ -10,6 +10,8 @@ Category
 <h1>Категории </h1>
 {% if category %}
     <table>
+        {% load cache %}
+        {% cache 60 posts%}
         <tr>
             <td> Название категории </td>
         </tr>
@@ -18,6 +20,7 @@ Category
             <td> <a href="{% url 'category' cats.id %}">{{ cats.name }} </a> </td>
         </tr>
         {% endfor %}
+        {% endcache %}
     </table>
 {% else %}
 <h2> Категорий нет </h2>

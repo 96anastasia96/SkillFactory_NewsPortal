@@ -6,6 +6,7 @@
 News & Articles
 {% endblock title %}
 
+
 {% block content %}
 <div class="card">
         <p class="card-text">Количество созданных постов за всё время: {{user_posts_count}}</p>
@@ -29,6 +30,8 @@ News & Articles
 
 
     {% if posts %}
+{% load cache %}
+{% cache 60 posts%}
         <table>
             <tr>
                 <td> Заголовок</td>
@@ -47,6 +50,7 @@ News & Articles
 
             </tr>
             {% endfor %}
+            {% endcache%}
         </table>
 
     {% else %}
