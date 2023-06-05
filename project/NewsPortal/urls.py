@@ -22,5 +22,5 @@ urlpatterns = [
     path('category/<int:pk>/', CategoryPost.as_view(), name='category'),
     path('add_category/', AddCategoryView.as_view(), name='add_category'),
     path('category_list/', CategoryList.as_view(), name='category_list'),
-    path('category/<int:pk>/subscribe', subscribe_to_category)
+    path('category/<int:pk>/subscribe', subscribe_to_category),
 ]

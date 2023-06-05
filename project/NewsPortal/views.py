@@ -17,8 +17,9 @@ from .filters import PostFilter
 from .forms import PostForm
 from django.db.models import Q
 from project import settings
-from django.views.decorators.cache import cache_page
 from django.core.cache import cache
+from django.contrib import admin
+
 
 
 class PostList(ListView):
@@ -286,4 +287,7 @@ def subscribe_to_category(request, pk):
     CategorySubscribe.objects.create(category=Category.objects.get(pk=pk), subscriber=User.objects.get(pk=current_user.id))
 
     return render(request, 'subscribe.html')
+
+
+
 

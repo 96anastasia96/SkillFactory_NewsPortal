@@ -1,0 +1,906 @@
+[
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 1,
+    "fields": {
+        "post": 1,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 2,
+    "fields": {
+        "post": 2,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 3,
+    "fields": {
+        "post": 3,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 4,
+    "fields": {
+        "post": 4,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 5,
+    "fields": {
+        "post": 5,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 6,
+    "fields": {
+        "post": 6,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 7,
+    "fields": {
+        "post": 8,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 8,
+    "fields": {
+        "post": 10,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 9,
+    "fields": {
+        "post": 11,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 10,
+    "fields": {
+        "post": 12,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 11,
+    "fields": {
+        "post": 13,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 12,
+    "fields": {
+        "post": 14,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 13,
+    "fields": {
+        "post": 15,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 14,
+    "fields": {
+        "post": 16,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 15,
+    "fields": {
+        "post": 17,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 16,
+    "fields": {
+        "post": 18,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 17,
+    "fields": {
+        "post": 19,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 18,
+    "fields": {
+        "post": 20,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 19,
+    "fields": {
+        "post": 21,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 20,
+    "fields": {
+        "post": 22,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 21,
+    "fields": {
+        "post": 23,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 22,
+    "fields": {
+        "post": 24,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 23,
+    "fields": {
+        "post": 25,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 24,
+    "fields": {
+        "post": 26,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 25,
+    "fields": {
+        "post": 27,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 26,
+    "fields": {
+        "post": 28,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 27,
+    "fields": {
+        "post": 29,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 28,
+    "fields": {
+        "post": 30,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 29,
+    "fields": {
+        "post": 31,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 30,
+    "fields": {
+        "post": 32,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 34,
+    "fields": {
+        "post": 36,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 35,
+    "fields": {
+        "post": 37,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 49,
+    "fields": {
+        "post": 51,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 50,
+    "fields": {
+        "post": 52,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 51,
+    "fields": {
+        "post": 53,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 52,
+    "fields": {
+        "post": 54,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 53,
+    "fields": {
+        "post": 55,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 54,
+    "fields": {
+        "post": 56,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 55,
+    "fields": {
+        "post": 57,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 56,
+    "fields": {
+        "post": 58,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 57,
+    "fields": {
+        "post": 59,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 58,
+    "fields": {
+        "post": 60,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 59,
+    "fields": {
+        "post": 61,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.postcategory",
+    "pk": 60,
+    "fields": {
+        "post": 62,
+        "category": 1
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 1,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:15:00.116Z",
+        "title": "Добавление новости",
+        "text": "Добавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новости",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 2,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:15:00.881Z",
+        "title": "Добавление новости",
+        "text": "Добавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новости",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 3,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:16:48.868Z",
+        "title": "Добавление новости",
+        "text": "Добавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новости",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 4,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:20:50.907Z",
+        "title": "Добавление новости",
+        "text": "Добавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новости",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 5,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:22:11.686Z",
+        "title": "Добавление новости",
+        "text": "Добавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новостиДобавление новости",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 6,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:36:30.053Z",
+        "title": "Новая новость",
+        "text": "Новая новость Новая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новостьНовая новость",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 7,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:40:15.373Z",
+        "title": "'type': forms.Select(attrs={'class': 'form-control'}),",
+        "text": "'type': forms.Select(attrs={'class': 'form-control'}),\r\n            'type': forms.Select(attrs={'class': 'form-control'}),\r\nv",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 8,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:47:25.427Z",
+        "title": "dsfkmslkmfslk",
+        "text": "lfkmdslfms dm  m md dlkmflsdkfkdlsmflksdlf lkmdlfkmsdl",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 9,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:49:23.612Z",
+        "title": "dtfyguhijkfcgvhjikl",
+        "text": "cvbhjkl h lhjhljh uhkjkh kjh jh kjh k",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 10,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:49:51.677Z",
+        "title": "dtfyguhijkfcgvhjikl 78 787 8",
+        "text": "nn n n ncvbhjkl h lhjhljh uhkjkh kjh jh kjh k jnkjnkjnkj",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 11,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T15:59:12.362Z",
+        "title": "xdfcghvbjnkml",
+        "text": "cgvhjbknmlbnm hjkl cfghujikoljbhv",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 12,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T16:01:15.412Z",
+        "title": "sdfkmsdklfmlk",
+        "text": "lkmflkmsflkmsl kmlskmdflkmsdlfkmlsdmflskdm",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 13,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T16:03:19.248Z",
+        "title": "sdxcfghvbjn",
+        "text": "dftyguhijkocfgvhujikxdftgyhujihgvbjkl",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 14,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T16:04:38.096Z",
+        "title": "flsdkmlkdsl",
+        "text": "mvlksdmdvlmdslvldskml kmsdlvkmlsdmvlksdmvlksdmlvks",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 15,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T16:08:34.493Z",
+        "title": "flskmlksdmlkmfl",
+        "text": "lfkmlskdmlfmsdlmflskdflksd",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 16,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T16:17:39.549Z",
+        "title": "kjnkjsdnvkndsvkj",
+        "text": "vkjnsdkvnsdknvksdj dsklfdskflksdlkfdskl",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 17,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:13:29.558Z",
+        "title": "вдльадьывдаль",
+        "text": "выльадьывдадвлыьадвлы",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 18,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:13:42.337Z",
+        "title": "двлыьадлвыьдаьыдвль",
+        "text": "авыльадывьдальывдлдвлыьадлыьвдаывь",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 19,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:13:53.697Z",
+        "title": "ывдальывдьадльывадльдывль",
+        "text": "аьвыдлаьдывльадьывдальывдьадльвыдальдывльадлывь",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 20,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:14:04.949Z",
+        "title": "авыдаьдывьадвлыьдаьыдвьл",
+        "text": "адвьыдальдывльадывьдаьывльадлвыьдальывдьадвлыьадлыв",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 21,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:19:49.448Z",
+        "title": "ldkfmlkdsmflksdm",
+        "text": "lkmfdslmflkdsmlfmdslkmflksmd",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 22,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:19:59.765Z",
+        "title": "dksmlfmldskm",
+        "text": "lmkflkmdslfmsdlkmflsdkmf",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 23,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:20:10.430Z",
+        "title": "fdsfsdkmflmsdlfmlsdmfl",
+        "text": "lfmsdlkmflksmdlfkmlsdkmfldskmflkmdlkfmsldkmflksmdlf",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 24,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:20:20.520Z",
+        "title": "dsklfmlsdmflsdmflkm",
+        "text": "lmlfkmdslmflsdmlfmsdlkmfldksmlfkmlsdkmflkdsm",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 25,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-21T19:20:29.308Z",
+        "title": "dlmflsdmflmsldkmflk",
+        "text": "lmflsdmlfmsldmflkmsdlfmldskmflkdsm",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 26,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T07:34:14.511Z",
+        "title": "nkjdnekjfn",
+        "text": "fjkndskjfnsdkjddmfmsd",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 27,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T07:34:24.712Z",
+        "title": "dsfmdsmf",
+        "text": "fm,dsfm,sdfmsd,mf,msdfmsd,f",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 28,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T07:34:34.454Z",
+        "title": "dfmds,fms,",
+        "text": "f,dsmfmsdm,fmsdm,f,smf,,m,",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 29,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T07:34:44.936Z",
+        "title": "dsfsd,fm,",
+        "text": "fmds,f,dsfds,mf,dsflksdlfk",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 30,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T15:57:31.678Z",
+        "title": "jndkfnsdkn",
+        "text": "kjnfdkjsnfkjnsdfkjnsdk",
+        "rating": 2
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 31,
+    "fields": {
+        "author": 2,
+        "type": "NW",
+        "time_in": "2023-05-22T16:50:54.680Z",
+        "title": "kmlkmdkldfm",
+        "text": "ldfkmsdlfmdslkfdskfkmdsfksd",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 32,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-22T18:04:03.543Z",
+        "title": "mskldmflkdmsflksd",
+        "text": "lmdslfmsdlmflsdmlfmsldmflsmdlfks",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 36,
+    "fields": {
+        "author": 5,
+        "type": "NW",
+        "time_in": "2023-05-22T20:24:11.054Z",
+        "title": "sdjfisdfklsdmflksdml",
+        "text": "lfmldksmflkesdmflkmsdlk",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 37,
+    "fields": {
+        "author": 5,
+        "type": "NW",
+        "time_in": "2023-05-22T20:24:24.257Z",
+        "title": "sldmflsdmflskm",
+        "text": "lmflmdlfsmlkfmldkmflsdmlfksmdlk",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 51,
+    "fields": {
+        "author": 5,
+        "type": "NW",
+        "time_in": "2023-05-22T20:47:24.782Z",
+        "title": "sdflmsdlkfm",
+        "text": "lfkmsdlmflsdmlfkmsldkfdslkm",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 52,
+    "fields": {
+        "author": 6,
+        "type": "NW",
+        "time_in": "2023-05-22T20:57:42.283Z",
+        "title": "fsdmflksmdlfk",
+        "text": "lmflskdmfldsmlkfmskldmflsmldfmlskdmf",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 53,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-23T10:22:58.497Z",
+        "title": "лдьдьдьадывьд",
+        "text": "льавдлыьадыьвдаьвдыльадлывьа",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 54,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-23T10:22:59.107Z",
+        "title": "лдьдьдьадывьд",
+        "text": "льавдлыьадыьвдаьвдыльадлывьа",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 55,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-24T17:36:46.100Z",
+        "title": "hbjhbhjbjh",
+        "text": "jkjnknkjnjkknjjknkjnknkjnkjn",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 56,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-24T17:45:13.712Z",
+        "title": "jkjnkj",
+        "text": "ghbjnkmlkjhbgfdxcghvbjknl;kjhg",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 57,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-24T17:49:22.453Z",
+        "title": "zdxfcgvhbjnkmjnbhvgcf",
+        "text": "sdcfghvbjnkljhgfdmmmmmmmm",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 58,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-24T17:56:57.534Z",
+        "title": "kmlkmlkmlmlkmlkmlkml",
+        "text": "cfgvbhjnkml,kmjnhgvfdsxfcgvhbjnkml",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 59,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-26T16:05:42.741Z",
+        "title": "оололотлотлтло",
+        "text": "апролщдлправпргшолщошргпавпрол",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 60,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-26T16:09:02.977Z",
+        "title": "ычвсампиртол",
+        "text": "чвсапмриотльдбльотирпмсамрит",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 61,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-26T16:40:05.326Z",
+        "title": "ТЕСТ",
+        "text": "1кеш кеш кеш кеш кеш кеш кеш кеш",
+        "rating": 0
+    }
+},
+{
+    "model": "NewsPortal.post",
+    "pk": 62,
+    "fields": {
+        "author": 1,
+        "type": "NW",
+        "time_in": "2023-05-26T17:05:52.319Z",
+        "title": "fdjsfsdfl",
+        "text": "flkdslfksdlkflksdlfkjsldkfmlsdkm",
+        "rating": 0
+    }
+}
+]
