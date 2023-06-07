@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (PostList, PostDetailView, PostCreate, PostUpdate, PostDelete, SearchResultsView, ArticleDelete,
                     ArticleUpdate, ArticleCreate, ArticleDetailView, byebye, AppointmentView, CategoryPost,
-                    AddCategoryView, CategoryList, subscribe_to_category, posts_created_last_week)
+                    AddCategoryView, CategoryList, subscribe_to_category, posts_created_last_week, Index)
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
@@ -23,4 +23,5 @@ urlpatterns = [
     path('add_category/', AddCategoryView.as_view(), name='add_category'),
     path('category_list/', CategoryList.as_view(), name='category_list'),
     path('category/<int:pk>/subscribe', subscribe_to_category),
+    path('index/', Index.as_view()),
 ]

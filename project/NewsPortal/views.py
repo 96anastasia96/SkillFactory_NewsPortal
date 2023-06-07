@@ -18,8 +18,7 @@ from .forms import PostForm
 from django.db.models import Q
 from project import settings
 from django.core.cache import cache
-from django.contrib import admin
-
+from django.utils.translation import gettext as _ # импортируем функцию для перевода
 
 
 class PostList(ListView):
@@ -289,5 +288,14 @@ def subscribe_to_category(request, pk):
     return render(request, 'subscribe.html')
 
 
+class Index(View):
+    def get(self, request):
+        string = _('Hello world')
+
+        context = {
+            'string': string
+        }
+
+        return HttpResponse(render(request, 'index.html', context))
 
 

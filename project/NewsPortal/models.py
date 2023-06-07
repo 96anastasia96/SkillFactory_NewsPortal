@@ -5,6 +5,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
+from django.utils.translation import pgettext_lazy
+
 
 article = 'AR'
 news = 'NW'
@@ -40,8 +42,8 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=40, unique=True)
-    subscribe = models.ManyToManyField(User, through='CategorySubscribe')
+    name = models.CharField(max_length=40, unique=True, verbose_name=pgettext_lazy('catname', 'catname'))
+    subscribe = models.ManyToManyField(User, through='CategorySubscribe', verbose_name=pgettext_lazy('subscriber', 'subscriber'))
 
     def __str__(self):
         return f'{self.name.title()}'
@@ -52,8 +54,8 @@ class Category(models.Model):
 
 
 class CategorySubscribe(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    subscriber = models.ForeignKey(User, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name=pgettext_lazy('category', 'category'))
+    subscriber = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name=pgettext_lazy('subscriber', 'subscriber'))
 
 
 class Appointment(models.Model):
@@ -70,13 +72,13 @@ class Appointment(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
-    type = models.CharField(max_length=7, choices=TYPE)
-    time_in = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-    rating = models.IntegerField(default=0)
+    author = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT, verbose_name=pgettext_lazy('Author', 'Author'))
+    type = models.CharField(max_length=7, choices=TYPE, verbose_name=pgettext_lazy('Type', 'Type'))
+    time_in = models.DateTimeField(auto_now_add=True, verbose_name=pgettext_lazy('Time_in', 'Time_in'))
+    category = models.ManyToManyField(Category, through='PostCategory', verbose_name=pgettext_lazy('Category', 'Category'))
+    title = models.CharField(max_length=255, verbose_name=pgettext_lazy('Title', 'Title'))
+    text = models.TextField(verbose_name=pgettext_lazy('Text', 'Text'))
+    rating = models.IntegerField(default=0, verbose_name=pgettext_lazy('Rating', 'Rating'))
 
 
     def like(self):
