@@ -177,21 +177,21 @@ ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'kissodessa'
-EMAIL_HOST_PASSWORD = 'qmgbdqjnmkdchycu'
+EMAIL_HOST_USER = '***********'
+EMAIL_HOST_PASSWORD = '***********'
 EMAIL_USE_SSL = True
 ADMINS = [
     # список всех админов в формате ('имя', 'их почта')
-    ('Anastasia', 'kissodessa@gmail.com'),
-    ('Anastasia2', 'ak96ak96@yandex.ru'),
+    ('***********', '***********'),
+    ('***********', '***********'),
 ]
 MANAGERS = [
     # список менеджеров
-    ('Anastasia3', 'su8scriber@yandex.ru'),
-    ('Anastasia4', 'su8scriber@gmail.com'),
+    ('***********', '***********'),
+    ('***********', '***********'),
 ]
 
-SERVER_EMAIL = 'kissodessa@gmail.com'
+SERVER_EMAIL = '***********'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
